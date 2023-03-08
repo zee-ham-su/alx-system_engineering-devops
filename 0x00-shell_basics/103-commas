@@ -1,2 +1,2 @@
 #!/bin/bash
-ls -1A | awk '{printf "%s%s",sep,$0; sep=", "}; END {print ""}'
+ls -1Ap | tr '\n' '\0' | sed -E 's/^([0-9A-Za-z])/,\1/;s/(\/)$/\1,/' | tr -d '\n' | xargs -0 echo
