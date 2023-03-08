@@ -1,2 +1,2 @@
 #!/bin/bash
-file -C -m school.magic
+file -m school.mgc schooldata.txt
