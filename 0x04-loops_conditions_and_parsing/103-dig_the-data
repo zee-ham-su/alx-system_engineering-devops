@@ -4,5 +4,4 @@
 # Then, use sort and uniq to group and count occurrences and
 #display the data in the specified format
 
-awk '{print $1, $9}' apache-access.log | sort | uniq -c | sort -nr |
-awk '{printf "    %-3s %-15s %s\n", $1, $2, $3}'
+awk '{print $1, $9}' apache-access.log | sort | uniq -c | sort -rn
