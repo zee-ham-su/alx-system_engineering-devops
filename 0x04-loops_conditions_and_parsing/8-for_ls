@@ -4,8 +4,12 @@
 #In a list format
 #Where only the part of the name after the first dash is displayed
 
-mylist=$(ls | grep -v '^\.')
-
-for i in $mylist; do
-  echo "$i" | cut -d '-' -f2
+shopt -s nullglob
+for i in *; do
+  if [[ "$i" == *-* ]]; then
+    name_after_dash="${i#*-}"
+    echo "$name_after_dash"
+  else
+    echo "$i"
+  fi
 done
