@@ -53,7 +53,6 @@ perror("fork");
 return (1);
 }
 }
-
-    infinite_while();
-   return (0);
+infinite_while();
+return (0);
 }
