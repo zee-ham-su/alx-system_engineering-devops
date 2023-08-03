@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+#a Bash script that listens on port 98 on localhost.
+
+while true;
+    do nc -l 127.0.0.1 98;
+done
