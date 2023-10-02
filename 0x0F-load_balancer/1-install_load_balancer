@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+# Configure Nginx so that its HTTP response
+
+# Update package lists
+sudo apt-get update
+
+# Install HAProxy
+sudo apt-get install -y haproxy
+
+# Configure HAProxy
+haproxy_config="\
+
+frontend web_balancer
+    bind *:80
+    mode http
+    default_backend web_servers
+
+backend web_servers
+    mode http
+    balance roundrobin
+    server web-01 54.237.78.97:80 check
+    server web-02 54.90.37.186:80 check
+"
+echo "$haproxy_config" | sudo tee /etc/haproxy/haproxy.cfg > /dev/null
+
+# Enable HAProxy to be managed via init script
+echo "ENABLED=1" | sudo tee -a /etc/default/haproxy
+
+# Restart HAProxy
+sudo service haproxy restart
