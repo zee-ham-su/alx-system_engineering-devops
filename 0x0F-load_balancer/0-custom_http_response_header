@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+# adding a custom Nginx response header
+# The name of the custom HTTP header must be X-Served-By
+# The value of the custom HTTP header must be
+# the hostname of the server Nginx is running on
+
+
+# Function to set up Nginx configuration
+configure_nginx() {
+    sudo apt-get update
+    sudo apt-get -y install nginx
+    sudo ufw allow 'Nginx HTTP'
+
+    # Create directory and set permissions
+    sudo mkdir -p /var/www/html
+    sudo chmod -R 755 /var/www
+
+    # Create index and error pages
+    echo 'Hello World!' | sudo tee /var/www/html/index.html
+    echo "Ceci n'est pas une page" | sudo tee /var/www/html/404.html
+
+    printf %s "server {
+        listen 80 default_server;
+        listen [::]:80 default_server;
+        add_header X-Served-By $HOSTNAME;
+        root   /var/www/html;
+        index  index.html index.htm;
+
+        location /redirect_me {
+            return 301 http://www.youtube.com/;
+         }
+
+        error_page 404 /404.html;
+        location /404 {
+            root /var/www/html;
+            internal;
+        }
+    }" > /etc/nginx/sites-available/default
+
+    service nginx restart;
+}
