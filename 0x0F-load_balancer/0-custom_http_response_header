@@ -1,31 +1,23 @@
 #!/usr/bin/env bash
 # Script to configure Nginx with a custom response header
 
-apt-get update
-apt-get install -y nginx
+# Update package lists
+sudo apt-get update
 
-mkdir -p /var/www/html
-touch /var/www/html/index.html
-echo "Hello World" > /var/www/html/index.html
-touch /var/www/html/404.html
-echo "Ceci n'est pas une page" > /var/www/html/404.html
+# Install Nginx
+sudo apt-get -y install nginx
 
-printf '%s' "server {
-    listen 80 default_server;
-    listen [::]:80 default_server;
-    add_header X-Served-By $HOSTNAME;
-    root   /var/www/html;
-    index  index.html index.htm;
+# Set up directory and permissions
+sudo mkdir -p /var/www/html
+sudo chmod -R 755 /var/www/html
 
-    location /redirect_me {
-        return 301 http://www.youtube.com/;
-    }
+# Create index and error pages
+echo 'Hello World!' | sudo tee /var/www/html/index.html
+echo "Ceci n'est pas une page" | sudo tee /var/www/html/404.html
 
-    error_page 404 /404.html;
-    location /404 {
-      root /var/www/html;
-      internal;
-    }
-}" > /etc/nginx/sites-available/default
+# Update Nginx configuration with custom header
+custom_header="X-Served-By"
+sudo sed -i "s/add_header X-Served-By.*/add_header $custom_header \$hostname;/g" /etc/nginx/sites-available/default
 
-service nginx restart
+# Restart Nginx
+sudo service nginx restart
