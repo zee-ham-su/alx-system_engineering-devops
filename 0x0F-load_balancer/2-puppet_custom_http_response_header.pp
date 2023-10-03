@@ -1,4 +1,4 @@
-# To automate the task of creating a custom
+# To automate task in creating a custom
 # HTTP header response, but with Puppet.
 
 exec {'update':
@@ -12,9 +12,6 @@ exec {'update':
   match => 'http {',
   line  => "http {\n\tadd_header X-Served-By \"${hostname}\";",
 }
-
-service { 'nginx':
-  ensure    => 'running',
-  enable    => true,
-  subscribe => File['/etc/nginx/nginx.conf'],
+-> exec {'run':
+  command => '/usr/sbin/service nginx restart',
 }
