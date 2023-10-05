@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+#Bash script that configures a server
+# debugging nginx port 80
+
+sudo ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled
+/default
+#restart nginx
+sudo service nginx restart
