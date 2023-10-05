@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+# a Bash script that will display information about subdomains.
+
+function audit_subdomain {
+    domain=$1
+    subdomain=$2
+
+    if [ -z "$subdomain" ]; then
+        subdomains=("www" "lb-01" "web-01" "web-02")
+    else
+        subdomains=("$subdomain")
+    fi
+
+    for sub in "${subdomains[@]}"; do
+        output=$(dig +short "$sub.$domain")
+        if [ -n "$output" ]; then
+            record_type=$(echo "$output" | awk '{print $1}')
+            destination=$(echo "$output" | awk '{print $2}')
+            echo "The subdomain $sub is a $record_type record and points to $destination"
+        fi
+    don
+}
+
+audit_subdomain "$1" "$2"
