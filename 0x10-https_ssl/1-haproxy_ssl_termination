@@ -35,13 +35,17 @@ defaults
 
 frontend http-in
     bind *:80
+    mode http
+	http-request set-header X-Forwarded-Proto http
     default_backend default-http-backend
 
 frontend https-in
-    bind *:443 ssl crt /etc/ssl/private/globalsufiian.tech
+    bind *:443 ssl crt /etc/ssl/private/globalsufiian.tech.pem
+	http-request set-header X-Forwarded-Proto http
     default_backend default-https-backend
-
+    
 backend default-http-backend
     mode http
     balance roundrobin
     server web-01 54.237.78.97:80 check
+    server web-02 54.90.37.186:80 check
