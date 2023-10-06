@@ -44,6 +44,8 @@ frontend http-in
 frontend https-in
     bind *:443 ssl crt /etc/haproxy/certs/www.globalhsufiian.tech.pem
     http-request set-header X-Forwarded-Proto http
+    acl is_root path -i /
+    use_backend default-https-backend if is_root
     default_backend default-https-backend
     
 backend default-http-backend
