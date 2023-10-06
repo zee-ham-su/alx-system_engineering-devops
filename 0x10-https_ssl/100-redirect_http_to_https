@@ -18,6 +18,7 @@ global
         ssl-default-bind-options ssl-min-ver TLSv1.2 no-tls-tickets
         ssl-dh-param-file /etc/haproxy/dhparams.pem
 
+
 defaults
         log     global
         mode    http
@@ -43,20 +44,12 @@ frontend http-in
 
 frontend https-in
     bind *:443 ssl crt /etc/haproxy/certs/www.globalhsufiian.tech.pem
-    acl is_root path -i /
-    use_backend default-https-backend if is_root
-    http-request set-header X-Forwarded-Proto http
+    http-request set-header X-Forwarded-Proto https
     http-request redirect scheme https code 301 unless { ssl_fc }
-    default_backend default-https-backend
+    default_backend default-http-backend
     
 backend default-http-backend
     mode http
     balance roundrobin
     server web-01 54.237.78.97:80 check
     server web-02 54.90.50.227:80 check
-
-backend default-https-backend
-    mode http
-    balance roundrobin
-    server web-01 54.237.78.97:443 check ssl verify none
-    server web-02 54.90.50.227:443 check ssl verify none
