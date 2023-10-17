@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 
 # Backup and compress all databases
-mysqldump --all-databases -u root --password="$1" > backup.sql
-
+mysqldump -u root --password="$1" tyrell_corp > backup.sql
 # Create a timestamp for the filename
 timestamp=$(date +"%d-%m-%Y")
 
