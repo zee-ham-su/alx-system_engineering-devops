@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-
 # Backup and compress all databases
 mysqldump -u root --password="$1" tyrell_corp > backup.sql
 # Create a timestamp for the filename
