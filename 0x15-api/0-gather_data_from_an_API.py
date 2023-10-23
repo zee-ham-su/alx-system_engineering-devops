@@ -12,13 +12,14 @@ if __name__ == '__main__':
     response = requests.get(url)
     employee_name = response.json().get('name')
 
-    todo_url = f"{url}/todos"
-    tasks = requests.get(todo_url).json()
+    todo_url = url + "/todos"
+    response = requests.get(todo_url)
+    tasks = response.json()
+    done_tasks = [task for task in tasks if task.get('completed')]
+    done = len(done_tasks)
 
-    done_tasks = [task['title'] for task in tasks if task.get('completed')]
+    print("Employee {} is done with tasks({}/{}):"
+          .format(employee_name, done, len(tasks)))
 
-    print("Employee {} is done with tasks ({}/{}):"
-          .format(employee_name, len(done_tasks), len(tasks)))
-
-    for task_title in done_tasks:
-        print("\t {}".format(task_title))
+    for task in done_tasks:
+        print("\t {}".format(task.get('title')))
