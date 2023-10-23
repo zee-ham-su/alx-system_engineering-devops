@@ -1,9 +1,10 @@
 #!/usr/bin/python3
 """Accesses a REST API for an employee ID and exports data in JSON format"""
 
+import json
 import requests
 import sys
-import json
+
 
 if __name__ == '__main__':
     employee_id = sys.argv[1]
