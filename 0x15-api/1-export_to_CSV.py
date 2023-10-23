@@ -7,22 +7,19 @@ import requests
 import sys
 
 if __name__ == '__main__':
-    employeeId = sys.argv[1]
-    baseUrl = "https://jsonplaceholder.typicode.com/users"
-    url = baseUrl + "/" + employeeId
+    employee_id = sys.argv[1]
+    base_url = "https://jsonplaceholder.typicode.com/users"
+    url = base_url + "/" + employee_id
 
     response = requests.get(url)
     username = response.json().get('username')
 
-    todoUrl = url + "/todos"
-    response = requests.get(todoUrl)
+    todo_url = url + "/todos"
+    response = requests.get(todo_url)
     tasks = response.json()
 
-    with open('{}.csv'.format(employeeId), 'w', newline='') as file:
-        csv_writer = csv.writer(file, quoting=csv.QUOTE_ALL)
-        csv_writer.writerow(['USER_ID', 'USERNAME',
-                             'TASK_COMPLETED_STATUS', 'TASK_TITLE'])
-
-        for task in tasks:
-            csv_writer.writerow([employeeId, username,
-                                 task.get('completed'), task.get('title')])
+    with open("{}.csv".format(employee_id), "w", newline="") as csvfile:
+        writer = csv.writer(csvfile, quoting=csv.QUOTE_ALL)
+        [writer.writerow(
+            [employee_id, username, t.get("completed"), t.get("title")]
+         ) for t in tasks]
