@@ -5,11 +5,6 @@ import requests
 import sys
 
 
-import json
-import requests
-import sys
-
-
 if __name__ == '__main__':
     base_url = "https://jsonplaceholder.typicode.com/users"
 
