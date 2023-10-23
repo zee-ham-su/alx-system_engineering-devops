@@ -1,6 +1,6 @@
 #!/usr/bin/python3
-""""""Accesses a REST API for an employee ID, providing TODO list progress information."""
-"""
+"""Accesses a REST API for an employee ID, providing TODO list progress information."""
+
 import requests
 import sys
 
