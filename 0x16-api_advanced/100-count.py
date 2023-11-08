@@ -4,11 +4,11 @@
 import requests
 
 
-def count_words(subreddit, word_list, after="", word_counts=None):
+def count_words(subreddit, word_list, after="", word_cnts=None):
     """Count occurrences of words in subreddit titles"""
 
     if after == "":
-        word_counts = {word.lower(): 0 for word in word_list}
+        word_cnts = {word.lower(): 0 for word in word_list}
 
     url = f"https://www.reddit.com/r/{subreddit}/hot.json"
     params = {'after': after}
@@ -23,8 +23,8 @@ def count_words(subreddit, word_list, after="", word_counts=None):
         for post in data['data']['children']:
             for word in post['data']['title'].split():
                 word_lower = word.lower()
-                if word_lower in word_counts:
-                    word_counts[word_lower] += 1
+                if word_lower in word_cnts:
+                    word_cnts[word_lower] += 1
 
         next_after = data['data']['after']
 
@@ -34,13 +34,13 @@ def count_words(subreddit, word_list, after="", word_counts=None):
                 for j, word2 in enumerate(word_list[i+1:], start=i+1):
                     if word1.lower() == word2.lower():
                         save.add(j)
-                        word_counts[word1.lower()] += word_counts[word2.lower()]
+                        word_cnts[word1.lower()] += word_cnts[word2.lower()]
 
-            sorted_word_counts = sorted(word_counts.items(),
+            sorted_word_counts = sorted(word_cnts.items(),
                                         key=lambda x: (-x[1], x[0]))
 
             for word, count in sorted_word_counts:
                 if count > 0 and word not in save:
                     print("{}: {}".format(word, count))
         else:
-            count_words(subreddit, word_list, next_after, word_counts)
+            count_words(subreddit, word_list, next_after, word_cnts)
