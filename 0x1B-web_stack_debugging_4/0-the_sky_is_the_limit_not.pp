@@ -1,14 +1,15 @@
-# Fix open files limit
+# Puppet Manifest: Adjust Nginx Open Files Limit and Restart
 
-# Use the exec resource to run a sed command, replacing the open files limit in the nginx configuration file.
+# Increase Nginx Open Files Limit
+
+#Modify Nginx open files limit with sed.
 exec { 'fix-for-nginx':
   command => 'sed -i "s/15/4096/" /etc/default/nginx',
   path    => '/usr/local/bin/:/bin/',
-} ->
+  }
 
-# Restart Nginx
+# Restart Nginx after open files limit update
 
-# Use the exec resource to restart Nginx after fixing the open files limit.
 exec { 'nginx-restart':
   command => 'nginx restart',
   path    => '/etc/init.d/',
